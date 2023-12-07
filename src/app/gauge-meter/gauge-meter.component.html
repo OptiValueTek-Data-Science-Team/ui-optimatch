@@ -1,0 +1,20 @@
+
+<div>
+    <rg-gauge-chart
+      [canvasWidth]="canvasWidth"
+      [needleValue]=needleValue
+      [bottomLabel]=needleValue
+      [centralLabel]="centralLabel"
+      [options]="options"
+      >
+    </rg-gauge-chart>
+     <!-- [options.arcDelimiters]="50"  How to change this value in view-->
+  </div>
+<div>
+    <ngx-gauge [type]="gaugeType" 
+            [value]="gaugeValue" 
+            [label]="gaugeLabel"  
+            [append]="gaugeAppendText">
+    </ngx-gauge>
+</div>
+  

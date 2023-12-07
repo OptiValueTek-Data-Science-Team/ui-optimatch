@@ -1,0 +1,21 @@
+/* gauge-meter.component.css */
+.gauge-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px; /* Adjust height as needed */
+  }
+  
+  ngx-gauge {
+    /* Customize the color of the gauge track */
+    --ngx-gauge-track-color: #d50f0f;
+  
+    /* Customize the color of the gauge progress bar */
+    --ngx-gauge-progress-color: #4caf50;
+  
+    /* Customize the color of the gauge value text */
+    --ngx-gauge-text-color: #333;
+  
+    /* Customize other styles as needed */
+  }
+  
