@@ -40,7 +40,11 @@ export class CandidatesComponent implements OnInit {
   searchQuery: string = '';
   CvSearchForm: FormGroup;
   filteredUserProfiles: UserProfile[] = [];
-
+  public canvasWidth
+  public needleValue
+  public centralLabel
+  public label
+  public options
   url: string = 'http://127.0.0.1:5000/get_job_description'
 
   // userProfiles: UserProfile[] = [
@@ -168,7 +172,22 @@ export class CandidatesComponent implements OnInit {
   userProfiles: any;
   matchingScore:number;
 
-  constructor(private modalService: NgbModal, private dataTransferService: DatatransferService) { }
+  constructor(private modalService: NgbModal, private dataTransferService: DatatransferService) {
+    this.canvasWidth = 300
+    this.needleValue =0
+    this.centralLabel = ''
+    this.options = {
+    hasNeedle: true,
+    needleColor: 'grayblack',
+    needleUpdateSpeed: 800,
+    arcColors: ['red','red','red', 'yellow','yellow','yellow','yellow','green','green','green'],
+    arcDelimiters: [10,20,30,40,50,60,70,80,90],
+    rangeLabel: ['0', '100'],
+    needleStartValue: 0,
+    arcLabels:['10','20','30','40','50','60','70','80','90'],
+    arcpadding: 5
+  }
+   }
 
 
   ngOnInit(): void {
@@ -277,14 +296,13 @@ export class CandidatesComponent implements OnInit {
         const dataString = data.cv
 
         this.matchingScore=data.score *1000
-        
+        this.needleValue=this.matchingScore;
         console.log(this.matchingScore);
-        
         
         const validJsonString = dataString.replace(/'/g, '"');
         const parsedData = JSON.parse(validJsonString);
 
-        this.selectedUserProfile = parsedData
+        this.selectedUserProfile = parsedData        
       });
 
     } catch (error) {

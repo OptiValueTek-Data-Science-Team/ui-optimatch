@@ -97,7 +97,18 @@
         </div>
 
         <div style="max-width: 310px;">
-          <app-gauge-meter [matching_score]="matchingScore"></app-gauge-meter>
+          <div class="col-md-6 col-sm-12 mb-3">
+            <!-- Replace the values below with your actual data -->
+            <rg-gauge-chart
+              [canvasWidth]="canvasWidth"
+              [needleValue]="needleValue"
+              [bottomLabel]="needleValue"
+              [centralLabel]="centralLabel"
+              [options]="options"
+            >
+            </rg-gauge-chart>
+          </div>
+          <!-- <app-gauge-meter [matching_score]="matchingScore"></app-gauge-meter> -->
         </div>
       </div>
     </div>
