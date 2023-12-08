@@ -86,9 +86,9 @@
     <div class="col-md-3 col-sm-12 mx-3 mb-3">
       <h4 class="text-center"><b>Insights By Optimatch</b></h4>
       <div class="d-flex flex-wrap justify-content-between m-2">
-      <p><i class='fas fa-angle-right' style='font-size:24px'></i><b>Matching score</b></p>
+      <p> <b>Matching score</b></p>
         
-        <div style="max-width: 310px;">
+        <div style="max-width: 310px;margin-bottom: 20px;">
           <div>
             <!-- Replace the values below with your actual data -->
             <rg-gauge-chart
@@ -103,7 +103,7 @@
           <!-- <app-gauge-meter [matching_score]="matchingScore"></app-gauge-meter> -->
        
         </div>
-        <p><i class='fas fa-angle-right' style='font-size:24px'></i><b>Matching Skills</b></p>
+        <p> <b>Skills</b></p>
         <div class="mb-3" style="max-width: 310px;">
           <pie-chart [data]="pieChartData" [is3d]="false"></pie-chart>
           <!-- <ng-container *ngIf="selectedUserProfile && selectedUserProfile.pieChartData">
