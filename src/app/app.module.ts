@@ -14,11 +14,13 @@ import { GaugeChartModule } from 'angular-gauge-chart';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 @NgModule({ schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
    
     AppComponent,
-    CandidatesComponent,PieChartComponent, GaugeMeterComponent
+    CandidatesComponent,PieChartComponent, GaugeMeterComponent, HeaderComponent, FooterComponent
   ],
   imports: [
     BrowserModule,

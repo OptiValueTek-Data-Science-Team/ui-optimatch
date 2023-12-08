@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {DatatransferService} from '../Services/datatransfer.service'
+import { DatatransferService } from '../Services/datatransfer.service'
 import { HttpParams } from '@angular/common/http';
 // import {} from '../pie-chart/pie-chart.component'
 interface UserProfile {
@@ -10,10 +10,10 @@ interface UserProfile {
   // recommendation: string;
   Skills: string;
   // resume: string; 
-  Contact:string;
-  Email:string;
+  Contact: string;
+  Email: string;
   // Skills2:string;
-  Education:string;
+  Education: string;
   // Experience:string
   // job_description:string;
   // pieChartData?: any[];
@@ -33,19 +33,19 @@ export class CandidatesComponent implements OnInit {
     ['sql', 8],
     ['Code', 12],
     ['Commute', 3],
-    ['Python',8],
-    ['Java',9],['Angular',9]
-    
+    ['Python', 8],
+    ['Java', 9], ['Angular', 9]
+
   ];
   searchQuery: string = '';
   CvSearchForm: FormGroup;
   filteredUserProfiles: UserProfile[] = [];
 
-  url:string='http://127.0.0.1:5000/get_job_description'
+  url: string = 'http://127.0.0.1:5000/get_job_description'
 
   // userProfiles: UserProfile[] = [
   //   {
-      
+
   //     pieChartData: [
   //       ['Task', 'Hours'],
   //       ['Angularjs', 2],
@@ -91,7 +91,7 @@ export class CandidatesComponent implements OnInit {
   //     Skills2: "C# 4.0/3.5, Angular13, .NET Core 3.1, ASP.NET 4.0/3.5, Web Service, MVC 5, Web API, LINQ, Entity Framework, Git,C#,ADO.NET,Webfrom, AJAX, XML",
   //     skills: ['HTML', 'CSS', 'JavaScript', 'React'],
   //     resume:'Create professional Resume / CV with expert content that can be customized just for you. Make a perfect resume in 2021 and get your dream job using the free resume builder. CV. Resume. Resume Website. Cover letter. Services: CV, Resume, Cover letter.'
-   
+
   //   },
   //   {
   //     pieChartData: [
@@ -99,7 +99,7 @@ export class CandidatesComponent implements OnInit {
   //       ['.net', 2],
   //       ['Cobol', 8],
   //       ['Code', 12],
-       
+
   //     ],
   //     role: 'Backend Developer',
   //     job_description:'python',
@@ -121,7 +121,7 @@ export class CandidatesComponent implements OnInit {
   //       ['Angularjs', 2],
   //       ['SQL', 8],
   //       ['Code', 12],
-        
+
   //     ],
   //     job_description:'java',
   //     name: "Harish Sharma",
@@ -135,7 +135,7 @@ export class CandidatesComponent implements OnInit {
   //     recommendation: 'Creative',
   //     skills: ['UI Design', 'Adobe XD', 'Sketch'], 
   //     resume:'Create professional Resume / CV with expert content that can be customized just for you. Make a perfect resume in 2021 and get your dream job using the free resume builder. CV. Resume. Resume Website. Cover letter. Services: CV, Resume, Cover letter.'
-   
+
   //   },
   //   // {
   //   //   role: 'Full Stack Developer',
@@ -143,14 +143,14 @@ export class CandidatesComponent implements OnInit {
   //   //   recommendation: 'Versatile',
   //   //   skills: ['HTML', 'CSS', 'JavaScript', 'Node.js', 'MongoDB'],
   //   //   resume:'Create professional Resume / CV with expert content that can be customized just for you. Make a perfect resume in 2021 and get your dream job using the free resume builder. CV. Resume. Resume Website. Cover letter. Services: CV, Resume, Cover letter.'
-   
+
   //   // },
   //   // {
   //   //   role: 'Data Scientist',
   //   //   name: 'Alex Turner',
   //   //   recommendation: 'Analytical',
   //   //   skills: ['Python', 'Machine Learning', 'Data Analysis'], resume:'Create professional Resume / CV with expert content that can be customized just for you. Make a perfect resume in 2021 and get your dream job using the free resume builder. CV. Resume. Resume Website. Cover letter. Services: CV, Resume, Cover letter.'
-   
+
   //   // },
   //   // {
   //   //   role: 'Mobile App Developer',
@@ -158,7 +158,7 @@ export class CandidatesComponent implements OnInit {
   //   //   recommendation: 'Innovative',
   //   //   skills: ['Flutter', 'Dart', 'Firebase'],
   //   //   resume:'Create professional Resume / CV with expert content that can be customized just for you. Make a perfect resume in 2021 and get your dream job using the free resume builder. CV. Resume. Resume Website. Cover letter. Services: CV, Resume, Cover letter.'
-   
+
   //   // },
   //   // Add more user profiles as needed
   // ];
@@ -166,10 +166,11 @@ export class CandidatesComponent implements OnInit {
   jobList3: any;
   http: any;
   userProfiles: any;
-  
-  constructor(private modalService: NgbModal,private dataTransferService:DatatransferService ) {}
+  matchingScore:number;
 
-  
+  constructor(private modalService: NgbModal, private dataTransferService: DatatransferService) { }
+
+
   ngOnInit(): void {
     this.CvSearchForm = new FormGroup({
       job_description: new FormControl(''),
@@ -178,105 +179,124 @@ export class CandidatesComponent implements OnInit {
     });
     // this.selectedUserProfile = this.userProfiles[0];
     this.getdata()
-    
+
   }
-  getdata(){
-   const api='http://127.0.0.1:5000/get_all_resume_data';
+  getdata() {
+    const api = 'http://127.0.0.1:5000/get_all_resume_data';
     this.dataTransferService.get(api).subscribe((data: any) => {
       this.userProfiles = data.result;
       // this.userProfiles.SkillsArray = this.selectedUserProfile.Skills.split(',')
-      console.log("data",data.result)
+      console.log("data", data.result)
+      this.selectedUserProfile = data.result[0]
     });
   }
   selectedUserProfile: UserProfile | null = null;
 
-//   serch(){
-//     // this.filter = [
-//     //   {
-//     //     name: 'location',
-//     //     op: 'ilike',
-//     //     val: this.CvSearchForm.controls.location.value,
-//     //   },
-//     //   {
-//     //     name: 'experience',
-//     //     op: 'eq',
-//     //     val: this.CvSearchForm.controls.experience.value,
-//     //   },
-//     //   {
-//     //     or: [
-//     //       {
-//     //         name: 'title',
-//     //         op: 'ilike',
-//     //         val: '%' + this.CvSearchForm.controls.search.value + '%',
-//     //       },
-//     //       {
-//     //         name: 'skills',
-//     //         op: 'ilike',
-//     //         val: '%' + this.CvSearchForm.controls.search.value + '%',
-//     //       },
-         
-//     //     ],
-//     //   },
-//     // ];
-//     this.filter = [
-//       {
-//         or: [
-//           {
-//             name: 'name', // Assuming 'name' is the property you want to search
-//             op: 'ilike',
-//             val: '%' + this.CvSearchForm.controls.job_description.value + '%',
-//           },
-//           // Add more properties if needed
-//         ],
-//       },
-//     ];
-//     this.url = this.url + '&filter=' + JSON.stringify(this.filter);
-//     this.dataTransferService.get(this.url).subscribe((data: any) => {
-//       this.jobList3 = data.data;
-//   })
-// }
+  //   serch(){
+  //     // this.filter = [
+  //     //   {
+  //     //     name: 'location',
+  //     //     op: 'ilike',
+  //     //     val: this.CvSearchForm.controls.location.value,
+  //     //   },
+  //     //   {
+  //     //     name: 'experience',
+  //     //     op: 'eq',
+  //     //     val: this.CvSearchForm.controls.experience.value,
+  //     //   },
+  //     //   {
+  //     //     or: [
+  //     //       {
+  //     //         name: 'title',
+  //     //         op: 'ilike',
+  //     //         val: '%' + this.CvSearchForm.controls.search.value + '%',
+  //     //       },
+  //     //       {
+  //     //         name: 'skills',
+  //     //         op: 'ilike',
+  //     //         val: '%' + this.CvSearchForm.controls.search.value + '%',
+  //     //       },
 
-// serch() {
-//   const searchTerm = this.CvSearchForm.controls.job_description.value.toLowerCase();
+  //     //     ],
+  //     //   },
+  //     // ];
+  //     this.filter = [
+  //       {
+  //         or: [
+  //           {
+  //             name: 'name', // Assuming 'name' is the property you want to search
+  //             op: 'ilike',
+  //             val: '%' + this.CvSearchForm.controls.job_description.value + '%',
+  //           },
+  //           // Add more properties if needed
+  //         ],
+  //       },
+  //     ];
+  //     this.url = this.url + '&filter=' + JSON.stringify(this.filter);
+  //     this.dataTransferService.get(this.url).subscribe((data: any) => {
+  //       this.jobList3 = data.data;
+  //   })
+  // }
 
-//   // Local data filtering
-//   this.userProfiles = this.userProfiles.filter(profile => {
-//     const descriptionMatches = profile.job_description.toLowerCase().includes(searchTerm);
-//     // Add more conditions if needed for additional fields
+  // serch() {
+  //   const searchTerm = this.CvSearchForm.controls.job_description.value.toLowerCase();
 
-//     return descriptionMatches;
-//   });
-// }
+  //   // Local data filtering
+  //   this.userProfiles = this.userProfiles.filter(profile => {
+  //     const descriptionMatches = profile.job_description.toLowerCase().includes(searchTerm);
+  //     // Add more conditions if needed for additional fields
 
-getEducationTitle(educationEntry: string): string {
-  // Extract the title part (before the first space)
-  const title = educationEntry.split(' ')[0];
-  return title;
-}
+  //     return descriptionMatches;
+  //   });
+  // }
 
-getEducationDetails(educationEntry: string): string {
-  // Extract the details part (after the first space)
-  const details = educationEntry.substr(educationEntry.indexOf(' ') + 1).trim();
-  return details;
-}
-serch() {
-  const job_description = this.CvSearchForm.controls.job_description.value;
-  const apiUrl = 'http://127.0.0.1:5000/get_job_description';
+  getEducationTitle(educationEntry: string): string {
+    // Extract the title part (before the first space)
+    const title = educationEntry.split(' ')[0];
+    return title;
+  }
 
-  // Append query parameters to the API URL
-  const apiWithParams= apiUrl + '?job_description=' + job_description
-  // Use the custom get method from your dataTransferService
-  this.dataTransferService.get(apiWithParams).subscribe((data: any) => {
-    const parsedData = JSON.parse(data[0]);
+  getEducationDetails(educationEntry: string): string {
+    // Extract the details part (after the first space)
+    const details = educationEntry.substr(educationEntry.indexOf(' ') + 1).trim();
+    return details;
+  }
+  serch() {
+    const job_description = this.CvSearchForm.controls.job_description.value;
+    const apiUrl = 'http://127.0.0.1:5000/get_job_description';
 
-  // Convert the object values to an array
-  this.userProfiles = Object.values(parsedData);
+    // console.log(job_description);
 
-  console.log("sss", this.userProfiles);
-  });
-}
 
-showResume(userProfile: UserProfile): void {
-  this.selectedUserProfile = userProfile;
-}
+    // Append query parameters to the API URL
+    const apiWithParams = apiUrl + '?job_description=' + job_description
+    // Use the custom get method from your dataTransferService
+    try {
+      this.dataTransferService.get(apiWithParams).subscribe((data: any) => {
+
+        const dataString = data.cv
+
+        this.matchingScore=data.score *1000
+        
+        console.log(this.matchingScore);
+        
+        
+        const validJsonString = dataString.replace(/'/g, '"');
+        const parsedData = JSON.parse(validJsonString);
+
+        this.selectedUserProfile = parsedData
+      });
+
+    } catch (error) {
+      console.log(error);
+
+    }
+
+  }
+
+  showResume(userProfile: UserProfile): void {
+    console.log(userProfile);
+
+    this.selectedUserProfile = userProfile;
+  }
 }

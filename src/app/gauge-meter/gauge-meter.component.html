@@ -1,5 +1,5 @@
 
-<div>
+<!-- <div>
     <rg-gauge-chart
       [canvasWidth]="canvasWidth"
       [needleValue]=needleValue
@@ -8,13 +8,34 @@
       [options]="options"
       >
     </rg-gauge-chart>
-     <!-- [options.arcDelimiters]="50"  How to change this value in view-->
-  </div>
-<div>
+     [options.arcDelimiters]="50"  How to change this value in view
+  </div> -->
+<!-- <div class="mb-5">
     <ngx-gauge [type]="gaugeType" 
             [value]="gaugeValue" 
             [label]="gaugeLabel"  
             [append]="gaugeAppendText">
     </ngx-gauge>
+</div> -->
+
+<div class="row d-flex flex-column ">
+  <div class="col-md-6 col-sm-12 mb-3">
+    <!-- Replace the values below with your actual data -->
+    <rg-gauge-chart
+      [canvasWidth]="canvasWidth"
+      [needleValue]="needleValue"
+      [bottomLabel]="needleValue"
+      [centralLabel]="centralLabel"
+      [options]="options"
+    >
+    </rg-gauge-chart>
+  </div>
+
+  <div class="col-md-6 col-sm-12 mb-5 ml-5">
+    <ngx-gauge [type]="gaugeType" 
+               [value]="gaugeValue" 
+               [label]="gaugeLabel"  
+               [append]="gaugeAppendText">
+    </ngx-gauge>
+  </div>
 </div>
-  

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, } from '@angular/core';
 
 @Component({
   selector: 'app-gauge-meter',
@@ -10,6 +10,7 @@ export class GaugeMeterComponent implements OnInit {
   gaugeValue = 90;
   gaugeLabel = "MAtch";
   gaugeAppendText = "%";
+  @Input() matching_score:number;
   
   public canvasWidth
   public needleValue
@@ -19,6 +20,8 @@ export class GaugeMeterComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log(this.matching_score);
+    
     this.canvasWidth = 300
     this.needleValue =50
     this.centralLabel = ''

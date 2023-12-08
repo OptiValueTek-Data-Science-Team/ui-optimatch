@@ -1,0 +1,12 @@
+<nav class=" headerc nav">
+    <h1 class="ml-5 mt-4" routerLink="Home" >Optimatch</h1>
+    
+    <div class="mr-5 mt-4" [ngSwitch]='menuType'>
+        <ul *ngSwitchCase="'default'"   >
+            <li><a routerLink="Home">Home</a></li>
+            <li><a routerLink="Seller">Buy</a></li>
+            <li><a routerLink="User Auth">Log In / Sign Up</a></li>
+        </ul>
+   
+    </div>
+</nav>

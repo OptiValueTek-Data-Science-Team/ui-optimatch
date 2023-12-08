@@ -1,117 +1,106 @@
-<div class="container-wrap">
-    <div class="row"  [formGroup]="CvSearchForm">
-        <div class="col-md-3">
-            <div class="filter-bar">
-              <select class="form-control" formControlName="location">
-                <option value="" selected disabled>Job Location</option>
-                          <option value="Remote">Remote</option>
-                          <option value="On_Site">On Site</option>
-                          <option value="Hybrid">Hybrid</option>
-                          
-                          
-              </select>
-            </div>
-          </div>
-          
-          <div class="col-md-3">
-            <div class="filter-bar">
-              <select class="form-control"  formControlName="experience">
-                <option value=0>Experience</option>
-                <option value='Beginner'>Beginner</option>
-                <option value='Intermediate'>Intermediate</option>
-                <option value='Experienced'>Experienced</option>
-               
-              </select>
-            </div>
-          </div>
-          <div class="col-md-5">
-            <div class="filter-bar" style="display: flex; align-items: center;">
-              <!-- Search Bar with Icon-->
-              <div style="position: relative; flex: 1;">
-                <input type="text" class="form-control" placeholder="Search..." formControlName="job_description">
-                <i class="fa fa-search" (click)="serch()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
-              </div>
-            </div>
-          </div>
-          
-          
-    </div>
-    <div class="row mt-5">
-        <div class="col-md-3 " >
-          <div class="card mb-3"  *ngFor="let item of userProfiles">
-            
-            <div class="card-body" (click)="showResume(item)">
-              <div class="row " style="font-size: 12px;">
-                <div class="col-6">
-                  <!-- Name on the left -->
-                  <p class="card-title">{{ item.role }}</p>
-                  <p class="card-title bold"><b> {{ item.Name | uppercase }}</b></p>
-                  <p class="card-title">{{ item.recommendation }}</p>
-                </div>
-                <div class="col-6">
-                  <!-- Skills on the right -->
-                  <h6 class="card-title">Skills</h6>
-                  <p class="card-text">{{ item.Skills }}</p>
-                </div>  
-              </div>
-            </div>
-          </div>
-        </div>
-      
-        <div class="col-md-5 full-shadow" style="background-color: #dbd1f7; overflow: auto;">
-          <div class="resume-box">
-            <div *ngIf="selectedUserProfile">
-              <!-- Display the selected user's resume here -->
-              <h2 class="text-center">{{ selectedUserProfile.Name }}'s Resume</h2>
-              <hr>
-              <!-- <p>{{ selectedUserProfile.resume }}</p> -->
-              <p><b>Email</b>: {{ selectedUserProfile.Email }} | <b>Contact</b>: {{ selectedUserProfile.Contact }}</p>
-              <!-- <h4 class="text-center">Education</h4> -->
-              <h4 class="text-center">Education</h4>
-              <ng-container *ngFor="let educationEntry of selectedUserProfile.Education.split(',')">
-                <p><b>{{ getEducationTitle(educationEntry) }}</b>{{ getEducationDetails(educationEntry) }}</p>
-              </ng-container>
-              
-             
-              <h4 class="text-center">Skills</h4>
-              <div class="d-flex flex-wrap justify-content-between m-2 w-100">
-                <ng-container *ngFor="let skill of selectedUserProfile.Skills.split(',')">
-                  <button type="button" class="btn btn-info m-2">{{ skill.trim() }}</button>
-                </ng-container>
-              </div>
-              <!-- You can further style and format the resume content as needed -->
-            </div>
-            <div *ngIf="!selectedUserProfile">
-              <!-- Display a message or default content when no user is selected -->
-              <p>Select a user to view their resume.</p>
-            </div>
-          </div>
-        </div>
-        
-        
-        <!-- ... your existing HTML code ... -->
-
-        <div class="col-md-3"> 
-          <p><b>Skills and Experience</b></p>
-          <div style="width: 310px; height: 200px;">
-            <pie-chart [data]="pieChartData" [is3d]="false"></pie-chart>
-            <!-- <ng-container *ngIf="selectedUserProfile && selectedUserProfile.pieChartData">
-              
-              <pie-chart [data]="selectedUserProfile.pieChartData" [is3d]="false"></pie-chart>
-            </ng-container>
-            <div *ngIf="!selectedUserProfile || !selectedUserProfile.pieChartData">
-              
-              <p>No pie chart data available.</p>
-            </div> -->
-          </div>
-          <div style="width: 310px; height: 200px;"><app-gauge-meter></app-gauge-meter></div>
-        </div>
-
-<!-- ... your existing HTML code ... -->
-
-          
-          
-          
+<div class="container mt-3">
+  <div class="row" [formGroup]="CvSearchForm">
+    <div class="col-md-3 col-sm-12 mb-3">
+      <div class="filter-bar">
+        <select class="form-control" formControlName="location">
+          <option value="" selected disabled>Job Location</option>
+          <option value="Remote">Remote</option>
+          <option value="On_Site">On Site</option>
+          <option value="Hybrid">Hybrid</option>
+        </select>
       </div>
-      
+    </div>
+
+    <div class="col-md-3 col-sm-12 mb-3">
+      <div class="filter-bar">
+        <select class="form-control" formControlName="experience">
+          <option value=0>Experience</option>
+          <option value='Beginner'>Beginner</option>
+          <option value='Intermediate'>Intermediate</option>
+          <option value='Experienced'>Experienced</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-sm-12 mb-3">
+      <div class="filter-bar" style="display: flex; align-items: center;">
+        <div style="position: relative; flex: 1;">
+          <input type="text" class="form-control" placeholder="Job Description..." formControlName="job_description">
+          <i class="fa fa-search" (click)="serch()"
+            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    
+    <div class="col-md-3 col-sm-12 mb-3">
+      <div class="card mb-3" *ngFor="let item of userProfiles">
+        <div class="card-body" (click)="showResume(item)">
+          <div class="row" style="font-size: 12px;">
+            <div class="col-6">
+              
+              <p class="card-title">{{ item.role }}</p>
+              <p class="card-title bold"><b>{{ item.Name | uppercase }}</b></p>
+              <p class="card-title">{{ item.recommendation }}</p>
+            </div>
+            <div class="col-6">
+              
+              <h6 class="card-title">Skills</h6>
+              <p class="text-truncate card-text">{{ item.Skills }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-5 col-sm-12 mb-3 full-shadow" style="background-color: #dbd1f7; overflow: auto;">
+      <div class="resume-box">
+        <div *ngIf="selectedUserProfile">
+          
+          <h2 class="text-center">{{ selectedUserProfile.Name }}'s Resume</h2>
+          <hr>
+          <p><b>Email</b>: {{ selectedUserProfile.Email }} | <b>Contact</b>: {{ selectedUserProfile.Contact }}</p>
+          <h4 class="text-center">Education</h4>
+          <ng-container *ngFor="let educationEntry of selectedUserProfile.Education.split(',')">
+            <p><b>{{ getEducationTitle(educationEntry) }}</b>{{ getEducationDetails(educationEntry) }}</p>
+          </ng-container>
+
+          <h4 class="text-center">Skills</h4>
+          <div class="d-flex flex-wrap justify-content-between m-2 w-100">
+            <ng-container *ngFor="let skill of selectedUserProfile.Skills.split(',')">
+              <button type="button" class="btn btn-info m-2">{{ skill.trim() }}</button>
+            </ng-container>
+          </div>
+          
+        </div>
+        <div *ngIf="!selectedUserProfile">
+          
+          <p>Select a user to view their resume.</p>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="col-md-3 col-sm-12 mb-3">
+      <p class="text-center"><b>Insights By Optimatch</b></p>
+      <div class="d-flex flex-wrap justify-content-between m-2">
+        <div class="mb-3" style="max-width: 310px;">
+          <pie-chart [data]="pieChartData" [is3d]="false"></pie-chart>
+          <!-- <ng-container *ngIf="selectedUserProfile && selectedUserProfile.pieChartData">
+            <pie-chart [data]="selectedUserProfile.pieChartData" [is3d]="false"></pie-chart>
+          </ng-container>
+          <div *ngIf="!selectedUserProfile || !selectedUserProfile.pieChartData">
+            <p>No pie chart data available.</p>
+          </div> -->
+        </div>
+
+        <div style="max-width: 310px;">
+          <app-gauge-meter [matching_score]="matchingScore"></app-gauge-meter>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
