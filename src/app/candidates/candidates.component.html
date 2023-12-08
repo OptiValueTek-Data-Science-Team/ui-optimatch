@@ -83,21 +83,13 @@
     </div>
 
     
-    <div class="col-md-3 col-sm-12 mb-3">
-      <p class="text-center"><b>Insights By Optimatch</b></p>
+    <div class="col-md-3 col-sm-12 mx-3 mb-3">
+      <h4 class="text-center"><b>Insights By Optimatch</b></h4>
       <div class="d-flex flex-wrap justify-content-between m-2">
-        <div class="mb-3" style="max-width: 310px;">
-          <pie-chart [data]="pieChartData" [is3d]="false"></pie-chart>
-          <!-- <ng-container *ngIf="selectedUserProfile && selectedUserProfile.pieChartData">
-            <pie-chart [data]="selectedUserProfile.pieChartData" [is3d]="false"></pie-chart>
-          </ng-container>
-          <div *ngIf="!selectedUserProfile || !selectedUserProfile.pieChartData">
-            <p>No pie chart data available.</p>
-          </div> -->
-        </div>
-
+      <p><i class='fas fa-angle-right' style='font-size:24px'></i><b>Matching score</b></p>
+        
         <div style="max-width: 310px;">
-          <div class="col-md-6 col-sm-12 mb-3">
+          <div>
             <!-- Replace the values below with your actual data -->
             <rg-gauge-chart
               [canvasWidth]="canvasWidth"
@@ -109,7 +101,20 @@
             </rg-gauge-chart>
           </div>
           <!-- <app-gauge-meter [matching_score]="matchingScore"></app-gauge-meter> -->
+       
         </div>
+        <p><i class='fas fa-angle-right' style='font-size:24px'></i><b>Matching Skills</b></p>
+        <div class="mb-3" style="max-width: 310px;">
+          <pie-chart [data]="pieChartData" [is3d]="false"></pie-chart>
+          <!-- <ng-container *ngIf="selectedUserProfile && selectedUserProfile.pieChartData">
+            <pie-chart [data]="selectedUserProfile.pieChartData" [is3d]="false"></pie-chart>
+          </ng-container>
+          <div *ngIf="!selectedUserProfile || !selectedUserProfile.pieChartData">
+            <p>No pie chart data available.</p>
+          </div> -->
+        </div>
+
+       
       </div>
     </div>
   </div>
