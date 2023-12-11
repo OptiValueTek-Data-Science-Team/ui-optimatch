@@ -18,6 +18,7 @@ interface UserProfile {
   // job_description:string;
   // pieChartData?: any[];
   // This could be a URL or actual content
+  matching_score:number;
 }
 @Component({
   selector: 'app-candidates',
@@ -284,25 +285,17 @@ export class CandidatesComponent implements OnInit {
     const job_description = this.CvSearchForm.controls.job_description.value;
     const apiUrl = 'http://127.0.0.1:5000/get_job_description';
 
-    // console.log(job_description);
-
-
-    // Append query parameters to the API URL
     const apiWithParams = apiUrl + '?job_description=' + job_description
     // Use the custom get method from your dataTransferService
     try {
-      this.dataTransferService.get(apiWithParams).subscribe((data: any) => {
-
-        const dataString = data.cv
-
-        this.matchingScore=data.score *1000
-        this.needleValue=this.matchingScore;
-        console.log(this.matchingScore);
+      this.dataTransferService.get(apiWithParams).subscribe((response: any) => {
+        console.log(response);
         
-        const validJsonString = dataString.replace(/'/g, '"');
-        const parsedData = JSON.parse(validJsonString);
+        this.userProfiles = response.data;
+        this.selectedUserProfile = response.data[0]
 
-        this.selectedUserProfile = parsedData        
+        this.matchingScore=response.data[0].matching_score *1000
+        this.needleValue=this.matchingScore;              
       });
 
     } catch (error) {
@@ -313,8 +306,13 @@ export class CandidatesComponent implements OnInit {
   }
 
   showResume(userProfile: UserProfile): void {
-    console.log(userProfile);
 
+    if (userProfile.matching_score >=0 ) {
+      
+      this.matchingScore=userProfile.matching_score *1000
+      this.needleValue=this.matchingScore;
+    }
+    
     this.selectedUserProfile = userProfile;
   }
 }
