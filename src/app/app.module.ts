@@ -7,7 +7,7 @@ import { CandidatesComponent } from './candidates/candidates.component';
 import { CommonModule } from '@angular/common';
 import { NgChartsModule } from 'ng2-charts';
 import {PieChartComponent} from './pie-chart/pie-chart.component'
-import { NgxOdometerModule } from 'ngx-odometer';
+// import { NgxOdometerModule } from 'ngx-odometer';
 import { GaugeMeterComponent } from './gauge-meter/gauge-meter.component';
 import { NgxGaugeModule } from 'ngx-gauge';
 import { GaugeChartModule } from 'angular-gauge-chart';
@@ -26,7 +26,7 @@ import { FooterComponent } from './footer/footer.component';
     BrowserModule,
     AppRoutingModule,NgbModule,CommonModule,
     NgxGaugeModule,
-    NgChartsModule,NgxOdometerModule.forRoot(),
+    NgChartsModule,
     GaugeChartModule,FormsModule,ReactiveFormsModule,
     HttpClientModule
 

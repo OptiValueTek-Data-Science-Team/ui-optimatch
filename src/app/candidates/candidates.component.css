@@ -5,6 +5,9 @@
 *{
     /* font-size: 12px; */
 }
+.filter-bar{
+    background-color: #a7f0b3;
+}
 .card{
     border-radius: 15px;
     background-color: #a7f0b3;
@@ -24,7 +27,62 @@
 .resume-box {
     border: 1px solid #ccc;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 5px;.card-title {
+        margin-bottom: .1rem;
+      /* font-weight: bold; */
+    }
+    *{
+        /* font-size: 12px; */
+    }
+    .card{
+        border-radius: 15px;
+        background-color: #a7f0b3;
+    }
+    
+        .card:hover{
+            border-radius: 15px;
+            color: white;
+            background-color: #036012;
+            box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+            cursor: pointer;
+            
+        }
+    .full-shadow{
+        box-shadow: 0px -25px 20px -20px rgba(0, 0, 0, 0.45), 25px 0 20px -20px rgba(0, 0, 0, 0.45), 0px 25px 20px -20px rgba(0, 0, 0, 0.45), -25px 0 20px -20px rgba(0, 0, 0, 0.45);
+    }
+    .resume-box {
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+        margin: 10px;
+        background-color: #e5def9;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+    
+    
+    .card {
+        border: 1px solid #ddd;
+        opacity: 0;
+        transform: translateY(40px) rotate(-5deg) scale(0.8);
+        animation: fadeInUp 0.5s ease-in-out forwards;
+      }
+      
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .card:nth-child(odd) {
+        animation-delay: calc(0.1s * (1 + (2 * (0.5 * (1 - animation-delay-step)))));
+      }
+      
+      .card:nth-child(even) {
+        animation-delay: calc(0.5s * (2 * (0.5 * (1 - animation-delay-step))));
+      }
+      
     margin: 10px;
     background-color: #e5def9;
     margin-top: 20px;

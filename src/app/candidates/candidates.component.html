@@ -105,7 +105,8 @@
         </div>
         <p> <b>Skills</b></p>
         <div class="mb-3" style="max-width: 310px;">
-          <pie-chart [data]="pieChartData" [is3d]="false"></pie-chart>
+          <div #pieChart style="width: width; height: height"></div>
+          <!-- <pie-chart [data]="pieChartData" [is3d]="false"></pie-chart> -->
           <!-- <ng-container *ngIf="selectedUserProfile && selectedUserProfile.pieChartData">
             <pie-chart [data]="selectedUserProfile.pieChartData" [is3d]="false"></pie-chart>
           </ng-container>
@@ -114,7 +115,16 @@
           </div> -->
         </div>
 
-       
+        <div class="chart-wrapper">
+          <canvas baseChart 
+          [datasets]="barChartData"
+          [labels]="barChartLabels"
+          [options]="barChartOptions"
+          [plugins]="barChartPlugins"
+          [legend]="barChartLegend"
+         >
+        </canvas>
+      </div>
       </div>
     </div>
   </div>

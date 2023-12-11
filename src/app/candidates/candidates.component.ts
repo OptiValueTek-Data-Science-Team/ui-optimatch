@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DatatransferService } from '../Services/datatransfer.service'
-import { HttpParams } from '@angular/common/http';
-// import {} from '../pie-chart/pie-chart.component'
+import { DatatransferService } from '../Services/datatransfer.service';
+import { ChartOptions, ChartType, ChartDataset } from 'chart.js'; // Correct import statements
+import {   LinearScale, TickOptions } from 'chart.js/auto';
+
+import { BaseChartDirective } from 'ng2-charts';
+declare var google: any;
 interface UserProfile {
+  additionalFieldData: any;
+  matching_score: any;
   // role: string;
   Name: string;
   // recommendation: string;
@@ -26,17 +31,66 @@ interface UserProfile {
 })
 
 export class CandidatesComponent implements OnInit {
+  @ViewChild('pieChart') pieChartElement: ElementRef;
+  @ViewChild('barChart') barChartElement: ElementRef;
   odometerCounterValue = 0;
-  pieChartData: any[] = [
+  data: any[] = [
     ['Task', 'Hours'],
     ['Angularjs', 2],
     ['sql', 8],
     ['Code', 12],
     ['Commute', 3],
     ['Python', 8],
-    ['Java', 9], ['Angular', 9]
+    ['Java', 9],
+     ['Angular', 9]
 
   ];
+  databar: any[] = [
+    ['Task', 'Hours'],
+    ['Angularjs', 'good'],
+    ['sql', 'best'],
+    ['Code', 'better'],
+    ['Commute', 'good'],
+    ['Python', 'best'],
+    ['Java', 'better'],
+    ['Angular', 'good']
+  ];
+
+  barChartOptions: ChartOptions = {
+    responsive: true,
+    scales: {
+      y: {
+        ticks: {
+          stepSize: 3,
+          min: 0,
+          max: 9,
+          callback: ((value: number) => {
+            switch (value) {
+              case 0:
+                return 'None';
+              case 3:
+                return 'Good';
+              case 6:
+                return 'Better';
+              case 9:
+                return 'Best';
+              default:
+                return '';
+            }
+          }) as TickOptions['callback'],
+        },
+      } as unknown as LinearScale,
+    },
+  };
+
+  barChartLabels: string[] = [];
+  hoursData:any[] = [];
+  barChartType: ChartType = 'bar';
+  barChartLegend = true;
+  barChartPlugins = [];
+
+  barChartData: ChartDataset[] = [];
+
   searchQuery: string = '';
   CvSearchForm: FormGroup;
   filteredUserProfiles: UserProfile[] = [];
@@ -169,10 +223,11 @@ export class CandidatesComponent implements OnInit {
   filter: ({ name: string; op: string; val: any; or?: undefined; } | { or: { name: string; op: string; val: string; }[]; name?: undefined; op?: undefined; val?: undefined; })[];
   jobList3: any;
   http: any;
-  userProfiles: any;
+  userProfiles: any[];
   matchingScore:number;
+  // data: any;
 
-  constructor(private modalService: NgbModal, private dataTransferService: DatatransferService) {
+  constructor(private cdr: ChangeDetectorRef,private modalService: NgbModal, private dataTransferService: DatatransferService) {
     this.canvasWidth = 300
     this.needleValue =0
     this.centralLabel = ''
@@ -188,7 +243,16 @@ export class CandidatesComponent implements OnInit {
     arcpadding: 5
   }
    }
+  //  barChartOptions: ChartOptions = {
+  //   responsive: true,
+  // };
 
+  // barChartLabels: Label[] = [];
+  // barChartType: ChartType = 'bar';
+  // barChartLegend = true;
+  // barChartPlugins = [];
+
+  // barChartData: ChartDataSets[] = [];
 
   ngOnInit(): void {
     this.CvSearchForm = new FormGroup({
@@ -198,15 +262,36 @@ export class CandidatesComponent implements OnInit {
     });
     // this.selectedUserProfile = this.userProfiles[0];
     this.getdata()
-
+    console.log("data",this.data)
+    this.loadGoogleCharts();
+    this.barChartLabels = this.databar.slice(1).map(item => item[0]);
+    this.hoursData = this.databar.slice(1).map(item => this.mapLabelToValue(item[1]));
+    
+    this.barChartData = [
+      { data: this.hoursData, label: 'Leval' }
+    ];
+  }
+  mapLabelToValue(label: string): number {
+    switch (label.toLowerCase()) {
+      case 'good':
+        return 3;
+      case 'better':
+        return 6;
+      case 'best':
+        return 9;
+      default:
+        return 0; // Handle unknown labels
+    }
   }
   getdata() {
     const api = 'http://127.0.0.1:5000/get_all_resume_data';
     this.dataTransferService.get(api).subscribe((data: any) => {
       this.userProfiles = data.result;
       // this.userProfiles.SkillsArray = this.selectedUserProfile.Skills.split(',')
-      console.log("data", data.result)
+      // console.log("data", data)
+      // this.needleValue=
       this.selectedUserProfile = data.result[0]
+      console.log("selectedUserProfile",this.selectedUserProfile.matching_score)
     });
   }
   selectedUserProfile: UserProfile | null = null;
@@ -284,25 +369,17 @@ export class CandidatesComponent implements OnInit {
     const job_description = this.CvSearchForm.controls.job_description.value;
     const apiUrl = 'http://127.0.0.1:5000/get_job_description';
 
-    // console.log(job_description);
-
-
-    // Append query parameters to the API URL
     const apiWithParams = apiUrl + '?job_description=' + job_description
     // Use the custom get method from your dataTransferService
     try {
-      this.dataTransferService.get(apiWithParams).subscribe((data: any) => {
-
-        const dataString = data.cv
-
-        this.matchingScore=data.score *1000
-        this.needleValue=this.matchingScore;
-        console.log(this.matchingScore);
+      this.dataTransferService.get(apiWithParams).subscribe((response: any) => {
+        console.log(response);
         
-        const validJsonString = dataString.replace(/'/g, '"');
-        const parsedData = JSON.parse(validJsonString);
+        this.userProfiles = response.data;
+        this.selectedUserProfile = response.data[0]
 
-        this.selectedUserProfile = parsedData        
+        this.matchingScore=response.data[0].matching_score *1000
+        this.needleValue=this.matchingScore;              
       });
 
     } catch (error) {
@@ -312,9 +389,54 @@ export class CandidatesComponent implements OnInit {
 
   }
 
-  showResume(userProfile: UserProfile): void {
-    console.log(userProfile);
-
-    this.selectedUserProfile = userProfile;
+  loadGoogleCharts() {
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(() => {
+      this.drawChart();
+    });
   }
+  
+
+  drawChart() {
+    const pieChartData = google.visualization.arrayToDataTable(this.data);
+    const options = {
+      title: '',
+      is3D: false,
+      pieHole: '',
+    };
+
+    const chart = new google.visualization.PieChart(this.pieChartElement.nativeElement);
+    chart.draw(pieChartData, options);
+  }
+
+  ngAfterViewInit() {
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(() => {
+      this.drawChart();
+    });
+  }
+
+  showResume(userProfile: UserProfile): void {
+    if (userProfile.matching_score >=0 ) {
+      
+      this.matchingScore=userProfile.matching_score *1000
+      this.needleValue=this.matchingScore;
+    }
+     this.selectedUserProfile = userProfile;
+    // Update the data for the chart
+    // this.data = this.selectedUserProfile.additionalFieldData;
+    // this.needleValue=this.selectedUserProfile.matchingScore;
+    // Update the chart
+    // this.drawChart();
+
+    // Manually trigger change detection
+    // this.cdr.detectChanges();
+    // this.barChartLabels = this.databar.slice(1).map(item => item[0]);
+    // this.hoursData = this.databar.slice(1).map(item => item[1]);
+
+    // this.barChartData = [
+    //   { data: this.hoursData, label: 'Task Hours' }
+    // ];
+  }
+
 }
